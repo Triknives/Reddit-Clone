@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Moment from 'moment';
+import { v4 } from 'uuid';
 
 function NewPostForm(props) {
   let _authors = null;
@@ -8,7 +10,7 @@ function NewPostForm(props) {
 
   function handleNewPostFormSubmission(event) {
     event.preventDefault();
-    props.onNewPostCreation({authors: _authors.value, postContent: _postContent.value});
+    props.onNewPostCreation({authors: _authors.value, postContent: _postContent.value, id: v4(), timeOpen: new Moment()});
     _authors.value = '';
     _postContent.value = '';
   }

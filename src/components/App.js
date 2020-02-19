@@ -4,6 +4,7 @@ import Header from './Header';
 import NewLikeControl from  './NewLikeControl'
 import NewPostControl from './NewPostControl';
 import { Switch, Route } from 'react-router-dom';
+import Moment from 'moment';
 
 
 class App extends React.Component {
@@ -16,11 +17,55 @@ class App extends React.Component {
     this.handleAddingNewPostToList = this.handleAddingNewPostToList.bind(this);
   }
 
-  handleAddingNewPostToList(newPost){
-    var newMasterPostList = this.state.masterPostList.slice();
-    newMasterPostList.push(newPost);
-    this.setState({masterPostList: newMasterPostList});
-  }
+  componentDidMount() {
+    console.log('componentDidMount');
+  this.waitTimeUpdateTimer = setInterval(() =>
+    this.updatePostElapsedWaitTime(),
+    60000
+  );
+}
+
+componentWillUnmount(){
+  console.log('componentWillMount');
+  clearInterval(this.waitTimeUpdateTimer);
+}
+
+componentWillMount() {
+  console.log('componentWillMount');
+}
+
+componentWillReceiveProps() {
+  console.log('componentWillReceiveProps');
+}
+
+shouldComponentUpdate() {
+  console.log('shouldComponentUpdate');
+  return true;
+}
+
+componentWillUpdate() {
+  console.log('componentWillUpdate');
+}
+
+componentDidUpdate() {
+  console.log('componentDidUpdate');
+}
+
+updatePostElapsedWaitTime() {
+   console.log("check");
+   let newMasterPostList = this.state.masterPostList.slice();
+   newMasterPostList.forEach((post) =>
+     post.formattedWaitTime = (post.timeOpen).fromNow(true)
+   );
+   this.setState({masterPostList: newMasterPostList})
+ }
+
+handleAddingNewPostToList(newPost){
+  var newMasterPostList = this.state.masterPostList.slice();
+  newMasterPostList.push(newPost);
+  newPost.formattedWaitTime = (newPost.timeOpen).fromNow(true)
+  this.setState({masterPostList: newMasterPostList});
+}
 
   render(){
     return (
